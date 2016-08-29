@@ -44,7 +44,9 @@
 
 --
 
+<kbd>
 ![CV](images/cv.png)
+</kbd>
 
 --
 
