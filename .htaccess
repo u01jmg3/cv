@@ -1,0 +1,6 @@
+IndexIgnore vendor composer.json composer.lock
+
+##=========================
+## Default directory page =
+##=========================
+DirectoryIndex make.php

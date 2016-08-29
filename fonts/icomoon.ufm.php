@@ -1,0 +1,48 @@
+<?php return array (
+  'codeToName' => 
+  array (
+  ),
+  'isUnicode' => true,
+  'EncodingScheme' => 'FontSpecific',
+  'FontName' => 'icomoon',
+  'FullName' => 'icomoon',
+  'Version' => 'Version 1.0',
+  'PostScriptName' => 'icomoon',
+  'Weight' => 'Medium',
+  'ItalicAngle' => '0',
+  'IsFixedPitch' => 'false',
+  'UnderlineThickness' => '0',
+  'UnderlinePosition' => '0',
+  'FontHeightOffset' => '0',
+  'Ascender' => '800',
+  'Descender' => '-199',
+  'FontBBox' => 
+  array (
+    0 => '0',
+    1 => '-188',
+    2 => '1000',
+    3 => '813',
+  ),
+  'StartCharMetrics' => '16',
+  'C' => 
+  array (
+    0 => 0,
+    1 => 0,
+    32 => 500,
+    61697 => 1000,
+    61698 => 857,
+    61699 => 1000,
+    61700 => 1000,
+    61701 => 1000,
+    61702 => 1000,
+    61703 => 1000,
+    61704 => 1000,
+    61705 => 1000,
+    61712 => 1000,
+    61713 => 1000,
+    61714 => 1000,
+  ),
+  'CIDtoGID_Compressed' => true,
+  'CIDtoGID' => 'eJztzjkKgEAABMHx1vXY///W2EzYQJCqtBmYdOnTYmhaAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwH2OmzFmyZkvJnuNRz1ypHz0DAAAAAAAA4LUbU3kAeQ==',
+  '_version_' => 6,
+);

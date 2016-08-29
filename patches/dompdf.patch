@@ -1,0 +1,115 @@
+From 23e523d6c1202ca48cc9af5b960b23603f94d5fc Mon Sep 17 00:00:00 2001
+From: Jonathan Goode
+Date: Thu, 14 Jul 2016 14:31:35 +0100
+Subject: [PATCH] Add functionality allowing headings to be set as bookmarks
+ Add support for `tel` URI
+
+---
+ vendor/dompdf/dompdf/lib/Cpdf.php         | 23 +++++++++++++++++++++++
+ vendor/dompdf/dompdf/src/Adapter/CPDF.php | 10 ++++++++++
+ vendor/dompdf/dompdf/src/Dompdf.php       | 10 ++++++++++
+ vendor/dompdf/dompdf/src/Helpers.php      |  2 +-
+ 4 files changed, 44 insertions(+), 1 deletion(-)
+
+diff --git a/vendor/dompdf/dompdf/lib/Cpdf.php b/vendor/dompdf/dompdf/lib/Cpdf.php
+index ad2c306..b447d6a 100644
+--- a/vendor/dompdf/dompdf/lib/Cpdf.php
++++ b/vendor/dompdf/dompdf/lib/Cpdf.php
+@@ -21,6 +21,11 @@ use FontLib\BinaryStream;
+ 
+ class Cpdf
+ {
++    /**
++     * @var string This array contains all of the bookmark objects
++     * See getBookmarks() and addText()
++     */
++    public $positions = array();
+ 
+     /**
+      * @var integer The current number of pdf objects in the document
+@@ -3777,6 +3782,17 @@ EOT;
+         return mb_strtoupper($matches[0]);
+     }
+ 
++
++    /**
++     * Callback method used by DOMPDF class
++     * and CPDF_Adapter class
++     *
++     * @return array
++     */
++    function getBookmarks(){
++        return $this->positions;
++    }
++
+     function concatMatches($matches)
+     {
+         $str = "";
+@@ -3810,6 +3826,13 @@ EOT;
+      */
+     function addText($x, $y, $size, $text, $angle = 0, $wordSpaceAdjust = 0, $charSpaceAdjust = 0, $smallCaps = false)
+     {
++        if (is_numeric(substr($text, 0, 1)) && preg_match('/([0-9]+)\. ([a-zA-Z ,]+)/i', $text, $matches)) {
++            //$text = $matches[0];
++            $text = $matches[2]; //text without number prefix
++            $heading = mb_convert_case(strtolower($text), MB_CASE_TITLE, 'UTF-8');
++            $this->positions[$heading] = $this->numPages . '|' . ($y + (round(1.5 * $this->getFontHeight($size), 1)));
++        }
++
+         if (!$this->numFonts) {
+             $this->selectFont($this->defaultFont);
+         }
+diff --git a/vendor/dompdf/dompdf/src/Adapter/CPDF.php b/vendor/dompdf/dompdf/src/Adapter/CPDF.php
+index d36e18a..ec88c2d 100644
+--- a/vendor/dompdf/dompdf/src/Adapter/CPDF.php
++++ b/vendor/dompdf/dompdf/src/Adapter/CPDF.php
+@@ -951,4 +951,14 @@ class CPDF implements Canvas
+     {
+         return $this->_pdf->messages;
+     }
++
++    /**
++     * Returns array of PDF bookmarks
++     *
++     * @return array
++     */
++    function getBookmarks()
++    {
++        return $this->_pdf->getBookmarks();
++    }
+ }
+diff --git a/vendor/dompdf/dompdf/src/Dompdf.php b/vendor/dompdf/dompdf/src/Dompdf.php
+index cea8881..6a5fa71 100644
+--- a/vendor/dompdf/dompdf/src/Dompdf.php
++++ b/vendor/dompdf/dompdf/src/Dompdf.php
+@@ -1477,4 +1477,14 @@ class Dompdf
+                 throw new Exception( 'Invalid property: ' . $prop );
+         }
+     }
++
++    /**
++     * Returns array of PDF bookmarks
++     *
++     * @return array
++     */
++    function getBookmarks()
++    {
++        return $this->getCanvas()->get_cpdf()->getBookmarks();
++    }
+ }
+diff --git a/vendor/dompdf/dompdf/src/Helpers.php b/vendor/dompdf/dompdf/src/Helpers.php
+index 5b19f68..a6d916f 100644
+--- a/vendor/dompdf/dompdf/src/Helpers.php
++++ b/vendor/dompdf/dompdf/src/Helpers.php
+@@ -61,7 +61,7 @@ class Helpers
+         }
+ 
+         // Is the url already fully qualified, a Data URI, or a reference to a named anchor?
+-        if (mb_strpos($url, "://") !== false || mb_substr($url, 0, 1) === "#" || mb_strpos($url, "data:") === 0 || mb_strpos($url, "mailto:") === 0) {
++        if (mb_strpos($url, "://") !== false || mb_substr($url, 0, 1) === "#" || mb_strpos($url, "data:") === 0 || mb_strpos($url, "tel:") === 0 || mb_strpos($url, "mailto:") === 0) {
+             return $url;
+         }
+ 
+-- 
+2.9.0.windows.1
+
