@@ -12,38 +12,6 @@
 
 --
 
-## How do you change the primary colour?
-
-- Open `./html/cv.yaml` and change the `primaryColour` to another RGB colour
-
-
-## How do you change the contents of the PDF?
-
-- Open `./html/cv.yaml` and start typing
-
---
-
-## How do you change the number of columns displayed in the Expertise section?
-
-- Open `./html/includes/config.inc.php` and adjust the `COLUMNS_EXPERTISE` constant
-
-
-## How do you change the number of rows displayed in the Professional Development section?
-
-- Open `./html/includes/config.inc.php` and adjust the `ROWS_PROFESSIONAL_DEVELOPMENT` constant
-
-## How do you display a profile picture?
-
-- Open `./html/includes/config.inc.php` and change `SHOW_PROFILE_PICTURE` to `true`
-  - Remember to populate `basics->picture` in `cv.yaml` with a link to an image
-
-
-## How do you switch from generating a PDF to viewing as a web page?
-
-- Open `./html/includes/config.inc.php` and change `PDF_MODE` to `false`
-
---
-
 <kbd>
 ![CV](images/cv.png)
 </kbd>
