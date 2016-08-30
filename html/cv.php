@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>CV - <?php echo date('M j, Y'); ?></title>
+    <title>CV - <?php echo date('M j, Y') ?></title>
     <style type="text/css">
         @font-face {
             font-family: Secca;
