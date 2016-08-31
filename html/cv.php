@@ -56,8 +56,7 @@
             text-align: justify;
             font-family: Secca;
             font-size: 9pt;
-            color: rgb(118, 113, 113); /* Grey */
-            background-color: white;
+            color: rgb(113, 113, 113); /* Grey */
         }
 
         table {
@@ -73,10 +72,10 @@
 
         /**********************************************/
 
-        .blue         { color: <?php echo 'rgb(' . implode(', ', $yaml->primaryColour) . ')' ?> }
-        .light-grey   { color: rgb(217, 217, 217) }
-        .dark-grey    { color: rgb(76, 76, 76) }
-        .darkest-grey { color: rgb(40, 40, 40) }
+        .primary-colour { color: <?php echo 'rgb(' . implode(', ', $yaml->colours->primaryColour) . ')' ?> }
+        .light-grey     { color: rgb(217, 217, 217) }
+        .dark-grey      { color: rgb(76, 76, 76) }
+        .darkest-grey   { color: rgb(40, 40, 40) }
 
         .lightest-grey-background { background-color: rgb(242, 242, 242) }
 
@@ -99,8 +98,8 @@
             margin-top: 12px;
         }
 
-        .white-background {
-            background-color: white;
+        .circle-background {
+            background-color: <?php echo 'rgb(' . implode(', ', $yaml->colours->backgroundColour) . ')' ?>;
             margin-top: 2px;
             padding-right: 9.5px;
             width: 1px;
@@ -146,14 +145,14 @@
 
         .light-grey-border { border: 1px solid rgb(217, 217, 217) }
 
-        .blue-border-bottom-2 { border-bottom: 2px solid <?php echo 'rgb(' . implode(', ', $yaml->primaryColour) . ')' ?> }
+        .primary-colour-border-bottom-2 { border-bottom: 2px solid <?php echo 'rgb(' . implode(', ', $yaml->colours->primaryColour) . ')' ?> }
 
         .light-grey-dotted-border-left { border-left: 1px dotted rgb(217, 217, 217) }
 
         .vertical-align-top    { vertical-align: top }
         .vertical-align-bottom { vertical-align: bottom }
 
-        .transparent-text { color: white }
+        .transparent-text { color: <?php echo 'rgb(' . implode(', ', $yaml->colours->backgroundColour) . ')' ?> }
 
         /**/
 
@@ -164,14 +163,14 @@
     <table>
         <tbody>
             <tr>
-                <td class="x-x-large-size auto-width no-wrap blue padding-left-2"><a href="<?php echo $yaml->basics->website ?>"><?php echo $yaml->basics->name ?></a></td>
-                <td class="small-size large-width sub-headline blue"><?php echo $yaml->basics->label ?></td>
+                <td class="x-x-large-size auto-width no-wrap primary-colour padding-left-2"><a href="<?php echo $yaml->basics->website ?>"><?php echo $yaml->basics->name ?></a></td>
+                <td class="small-size large-width sub-headline primary-colour"><?php echo $yaml->basics->label ?></td>
             </tr>
         </tbody>
     </table>
     <table class="no-wrap">
         <tbody>
-            <tr class="small-size dark-grey padding-bottom-15">
+            <tr class="small-size darkest-grey padding-bottom-15">
                 <td class="column-size-35"><span class="icon-font icon-location medium-size"></span> <a href="https://maps.google.com/?q=<?php echo implode(',', $yaml->basics->location->coordinates) ?>"><?php echo implode(', ', array($yaml->basics->location->address, $yaml->basics->location->postalCode, $yaml->basics->location->countryCode)) ?></a></td>
                 <td class="column-size-25-5"><span class="icon-font icon-mobile-phone medium-size"></span> <a href="tel:<?php echo format_telephone_number($yaml->basics->phone) ?>"><?php echo $yaml->basics->phone ?></a></td>
                 <td><span class="icon-font icon-envelope medium-size"></span> <a href="mailto:<?php echo $yaml->basics->email ?>"><?php echo $yaml->basics->email ?></a></td>
@@ -182,7 +181,7 @@
     <!-- Start of Section 1 - Education -->
     <table class="no-wrap">
         <tbody>
-            <tr class="blue vertical-align-bottom">
+            <tr class="primary-colour vertical-align-bottom">
                 <td class="x-large-size column-size-10 padding-left-9"><span class="icon-font icon-graduation-cap"></span></td>
                 <td class="large-size all-caps">1. Education</td>
             </tr>
@@ -195,8 +194,8 @@
                 <td class="column-size-2-5"></td>
                 <?php if($key < (sizeof($yaml->education) - 1)){ ?>
                 <td class="column-size-7-5 light-grey-dotted-border-left">
-                    <div class="circle blue">
-                        <div class="icon-font icon-circle white-background"></div>
+                    <div class="circle primary-colour">
+                        <div class="icon-font icon-circle circle-background"></div>
                     </div>
                 </td>
                 <?php } else { ?>
@@ -204,8 +203,8 @@
                     <table class="margin-top-minus-1">
                         <tr>
                             <td class="light-grey-dotted-border-left">&nbsp;
-                                <div class="circle blue">
-                                    <div class="icon-font icon-circle white-background"></div>
+                                <div class="circle primary-colour">
+                                    <div class="icon-font icon-circle circle-background"></div>
                                 </div>
                             </td>
                         </tr>
@@ -223,7 +222,7 @@
         <tbody>
             <tr>
                 <td class="column-size-9"></td>
-                <td class="blue-border-bottom-2 padding-top-4"></td>
+                <td class="primary-colour-border-bottom-2 padding-top-4"></td>
             </tr>
             <tr>
                 <td></td>
@@ -234,7 +233,7 @@
     <!-- Start of Section 2 - Experience -->
     <table class="no-wrap">
         <tbody>
-            <tr class="blue vertical-align-bottom">
+            <tr class="primary-colour vertical-align-bottom">
                 <td class="x-large-size column-size-10 padding-left-10"><span class="icon-font icon-clock"></span></td>
                 <td class="large-size all-caps">2. Experience</td>
             </tr>
@@ -247,8 +246,8 @@
                 <td class="column-size-2-5"></td>
                 <?php if($key < $length){ ?>
                 <td class="column-size-7-5 light-grey-dotted-border-left">
-                    <div class="circle blue">
-                        <div class="icon-font icon-circle white-background"></div>
+                    <div class="circle primary-colour">
+                        <div class="icon-font icon-circle circle-background"></div>
                     </div>
                 </td>
                 <?php } else { ?>
@@ -256,8 +255,8 @@
                     <table class="margin-top-minus-1">
                         <tr>
                             <td class="light-grey-dotted-border-left">&nbsp;
-                                <div class="circle blue">
-                                    <div class="icon-font icon-circle white-background"></div>
+                                <div class="circle primary-colour">
+                                    <div class="icon-font icon-circle circle-background"></div>
                                 </div>
                             </td>
                         </tr>
@@ -281,7 +280,7 @@
                     );
                 ?></td>
                 <td class="small-size padding-left-2 <?php echo ($key % 2 === 0) ? 'padding-top-2' : 'padding-top-1-5' ?>">
-                    <?php echo complex_wordwrap(97, '<span class="icon-font icon-dot medium-size transparent-text"></span>', '<span class="icon-font icon-dot medium-size"></span>', $experience->summary) ?>
+                    <?php echo complex_wordwrap(97, '<span class="icon-font icon-dot medium-size transparent-text"></span>', '<span class="icon-font icon-dot medium-size dark-grey"></span>', $experience->summary) ?>
                 </td>
             </tr>
             <?php if($key < $length){ ?>
@@ -300,7 +299,7 @@
         <tbody>
             <tr>
                 <td class="column-size-9"></td>
-                <td class="blue-border-bottom-2 padding-top-4"></td>
+                <td class="primary-colour-border-bottom-2 padding-top-4"></td>
             </tr>
             <tr>
                 <td></td>
@@ -312,8 +311,8 @@
     <table class="no-wrap">
         <tbody>
             <tr class="vertical-align-top">
-                <td class="x-large-size column-size-10 padding-left-8 padding-top-5 blue"><span class="icon-font icon-brain"></span></td>
-                <td class="large-size all-caps blue column-size-25-2">3. Expertise</td>
+                <td class="x-large-size column-size-10 padding-left-8 padding-top-5 primary-colour"><span class="icon-font icon-brain"></span></td>
+                <td class="large-size all-caps primary-colour column-size-25-2">3. Expertise</td>
                 <?php echo simple_wordwrap('<td class="padding-top-5 small-size">%s</td>', implode(', ', $yaml->skills[0]->keywords), COLUMNS_EXPERTISE) ?>
             </tr>
         </tbody>
@@ -323,7 +322,7 @@
         <tbody>
             <tr>
                 <td class="column-size-9"></td>
-                <td class="blue-border-bottom-2 padding-top-4"></td>
+                <td class="primary-colour-border-bottom-2 padding-top-4"></td>
             </tr>
             <tr>
                 <td></td>
@@ -334,7 +333,7 @@
     <!-- Start of Section 4 - About Me -->
     <table class="no-wrap">
         <tbody>
-            <tr class="blue vertical-align-bottom">
+            <tr class="primary-colour vertical-align-bottom">
                 <td class="x-large-size column-size-10 padding-left-8"><span class="icon-font icon-person"></span></td>
                 <td class="large-size all-caps padding-left-1">5. About Me</td>
             </tr>
@@ -355,7 +354,7 @@
         <tbody>
             <tr>
                 <td class="column-size-9"></td>
-                <td class="blue-border-bottom-2 padding-top-4"></td>
+                <td class="primary-colour-border-bottom-2 padding-top-4"></td>
             </tr>
             <tr>
                 <td></td>
@@ -366,7 +365,7 @@
     <!-- Start of Section 5 - Professional Development -->
     <table class="no-wrap">
         <tbody>
-            <tr class="blue vertical-align-bottom">
+            <tr class="primary-colour vertical-align-bottom">
                 <td class="x-large-size column-size-10 padding-left-8"><span class="icon-font icon-star"></span></td>
                 <td class="large-size all-caps">4. Professional Development</td>
             </tr>
@@ -382,9 +381,9 @@
                 $courses      = $yaml->training;
                 usort($courses, 'date_compare_courses');
 
-                $initial_row = '<tr><td class="column-size-11-5"></td><td class="darkest-grey light-grey-border lightest-grey-background column-size-80 padding-left-3">%s</td><td class="light-grey-border lightest-grey-background right-align-text column-size-10 padding-right-3">%s</td><td class="light-grey-border lightest-grey-background right-align-text column-size-10 padding-right-4">%s</td><td class="column-size-1-5"></td></tr>';
-                $odd_row     = '<tr><td></td><td class="darkest-grey light-grey-border lightest-grey-background padding-left-3">%s</td><td class="light-grey-border lightest-grey-background right-align-text padding-right-3">%s</td><td class="light-grey-border lightest-grey-background right-align-text padding-right-4">%s</td><td></td></tr>';
-                $even_row    = '<tr><td></td><td class="darkest-grey light-grey-border padding-left-3">%s</td><td class="light-grey-border right-align-text padding-right-3">%s</td><td class="light-grey-border right-align-text padding-right-4">%s</td><td></td></tr>';
+                $initial_row = '<tr><td class="column-size-11-5"></td><td class="dark-grey light-grey-border lightest-grey-background column-size-80 padding-left-3">%s</td><td class="light-grey-border lightest-grey-background right-align-text column-size-10 padding-right-3">%s</td><td class="light-grey-border lightest-grey-background right-align-text column-size-10 padding-right-4">%s</td><td class="column-size-1-5"></td></tr>';
+                $odd_row     = '<tr><td></td><td class="dark-grey light-grey-border lightest-grey-background padding-left-3">%s</td><td class="light-grey-border lightest-grey-background right-align-text padding-right-3">%s</td><td class="light-grey-border lightest-grey-background right-align-text padding-right-4">%s</td><td></td></tr>';
+                $even_row    = '<tr><td></td><td class="dark-grey light-grey-border padding-left-3">%s</td><td class="light-grey-border right-align-text padding-right-3">%s</td><td class="light-grey-border right-align-text padding-right-4">%s</td><td></td></tr>';
                 $all_rows    = '';
 
                 foreach($courses as $course){
@@ -421,7 +420,7 @@
         <tbody>
             <tr>
                 <td class="column-size-9"></td>
-                <td class="blue-border-bottom-2 padding-top-4"></td>
+                <td class="primary-colour-border-bottom-2 padding-top-4"></td>
             </tr>
             <tr>
                 <td></td>
@@ -433,8 +432,8 @@
     <table class="no-wrap">
         <tbody>
             <tr>
-                <td class="x-large-size column-size-10 padding-left-8 blue vertical-align-bottom"><span class="icon-font icon-people"></span></td>
-                <td class="large-size all-caps blue vertical-align-bottom column-size-25-2">6. Referees</td>
+                <td class="x-large-size column-size-10 padding-left-8 primary-colour vertical-align-bottom"><span class="icon-font icon-people"></span></td>
+                <td class="large-size all-caps primary-colour vertical-align-bottom column-size-25-2">6. Referees</td>
                 <td class="vertical-align-top padding-top-7 small-size">Available on request</td>
             </tr>
         </tbody>

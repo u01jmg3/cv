@@ -1,7 +1,12 @@
-primaryColour:
- - 41
- - 160
- - 204
+colours:
+ primaryColour:
+  - 41
+  - 160
+  - 204
+ backgroundColour:
+  - 255
+  - 255
+  - 255
 basics:
  name: "Tom Preston-Werner"
  label: "GitHub Founder"

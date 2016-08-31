@@ -55,14 +55,19 @@ class PDF extends FPDI_with_annots {
     }
 
     public function Header(){
-        $this->Rect(0, 0, 210, 4, 'F', '', $this->primaryColour); // 7 is max $h
+        // Check if colour is white
+        if($this->backgroundColour !== array(255, 255, 255)){
+            $this->Rect(0, 0, 210, 297, 'F', '', $this->backgroundColour);
+        }
+
+        $this->Rect(0, 0, 210, 4, 'F', '', $this->primaryColour); // 7 is max for $h (fourth parameter)
     }
 
     // Page numbers + 1D barcode of current date
     public function Footer(){
         $this->SetY(-13.4);
         $this->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, 0);
-        $this->SetTextColor(40, 40, 40);
+        $this->SetTextColor(40, 40, 40); // Darkest Grey
 
         $style = array(
             'position'     => '',
@@ -131,8 +136,9 @@ if(!$stream){
     // https://sourceforge.net/p/tcpdf/discussion/435311/thread/b16d9231/
     // https://stackoverflow.com/questions/5598257/tcpdf-encryption-digital-signature
     $pdf = new Pdf();
-    $pdf->primaryColour = $yaml->primaryColour;
-    $pdf->image = $yaml->basics->picture;
+    $pdf->backgroundColour = $yaml->colours->backgroundColour;
+    $pdf->primaryColour    = $yaml->colours->primaryColour;
+    $pdf->image            = $yaml->basics->picture;
     $pdf->SetDisplayMode($zoom = 125/*'real'*/, $layout = 'continuous', $mode = 'UseNone');
     $preferences = array(
         'HideMenubar'     => false,
