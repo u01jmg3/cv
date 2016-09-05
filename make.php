@@ -5,13 +5,12 @@ require_once 'includes/tcpdf_autoconfig.php';
 require_once 'includes/config.inc.php';
 require_once 'includes/functions.inc.php';
 require_once 'vendor/autoload.php';
-if(ini_get('allow_url_include')){
-    require_once 'https://rawgit.com/rahulbot/PHP-Image-to-Color-Palette/master/ColorPalette.php';
-}
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\Yaml\Yaml;
+use League\ColorExtractor\Palette;
+use League\ColorExtractor\Color;
 
 function createPDF($html, $filename, $stream, $dirname, $yaml){
     $options = new Options();
@@ -215,7 +214,7 @@ if(!$stream){
 
     $pdf->SetProtection($permissions = array('modify', 'copy', 'annot-forms', 'fill-forms', 'extract', 'assemble'), '', $password, 1, null);
 
-    if(extension_loaded('imagick') && class_exists('ColorPalette')){
+    if(extension_loaded('imagick')){
         $pdf_output = $pdf->Output($destinationFile, 'S');
 
         $blob = new Imagick();
@@ -226,15 +225,16 @@ if(!$stream){
         $imagick->newimage(1654, 2339, convert_colour_to_rgb($yaml->colours->backgroundColour)); // Set background to white
         $imagick->compositeimage($blob, Imagick::COMPOSITE_OVER, 0, 0); // Merge both images
 
-        $imagick->setImageFormat('png');
-        $path = 'images/cv.png';
+        $file_format = 'png';
+        $imagick->setImageFormat($file_format);
+        $path = "images/cv.{$file_format}";
         file_put_contents($path, $imagick);
 
         $html_output = '<style>body { margin: 0 }</style>';
 
         if(file_exists($path)){
-            $palettes = ColorPalette::GenerateFromLocalImage($path);
-            $palettes = array_slice($palettes, 0, 6, true); // First 6 colours
+            $palette = Palette::fromFilename($path);
+            $colours = $palette->getMostUsedColors(6);
 
             $html_output .= '<style>
             ul {
@@ -265,14 +265,15 @@ if(!$stream){
             </style>';
 
             $html_output .= '<ul>';
-            foreach($palettes as $hex => $occurrences){
+            foreach($colours as $colour => $count){
+                $hex = strtolower(ltrim(Color::fromIntToHex($colour), '#'));
                 // If `ffffff` trim to `fff`
                 if(preg_match('/^(.)\1*$/', $hex)){
                     $hex = substr($hex, 0, 3);
                 }
-                $occurrences = number_format($occurrences); // Add thousands separator
+                $count = number_format($count); // Add thousands separator
 
-                $html_output .= "<li class='{$hex}' style='background-color: #{$hex}' title='#{$hex} (&times;{$occurrences})'></li>";
+                $html_output .= "<li class='{$hex}' style='background-color: #{$hex}' title='#{$hex} (&times;{$count})'></li>";
             }
             $html_output .= '</ul>';
         }

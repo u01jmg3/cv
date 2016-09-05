@@ -6,6 +6,7 @@
         "php": ">=5.3.8",
         "ext-imagick": "*",
         "dompdf/dompdf": "0.7.0",
+        "league/color-extractor": "0.3.1",
         "phenx/php-font-lib": "0.4",
         "phenx/php-svg-lib": "0.1",
         "u01jmg3/setasign-fpdi": "1.4.5",
