@@ -185,3 +185,11 @@
 
         return ($t2 - $t1);
     }
+
+    /**
+     * @param   $colour_array
+     * @return  string
+     */
+    function convert_colour_to_rgb($colour_array){
+        return 'rgb(' . implode(', ', $colour_array) . ')';
+    }

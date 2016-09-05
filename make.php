@@ -3,7 +3,11 @@
 define('K_TCPDF_EXTERNAL_CONFIG', true);
 require_once 'includes/tcpdf_autoconfig.php';
 require_once 'includes/config.inc.php';
+require_once 'includes/functions.inc.php';
 require_once 'vendor/autoload.php';
+if(ini_get('allow_url_include')){
+    require_once 'https://rawgit.com/rahulbot/PHP-Image-to-Color-Palette/master/ColorPalette.php';
+}
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -11,11 +15,13 @@ use Symfony\Component\Yaml\Yaml;
 
 function createPDF($html, $filename, $stream, $dirname, $yaml){
     $options = new Options();
-    $options->set('isPhpEnabled', true);
-    $options->set('isRemoteEnabled', true);
-    $options->set('fontDir', 'fonts');
-    $options->set('fontCache', 'fonts');
-    $options->set('defaultPaperSize', 'a4');
+    $options->set(array(
+        'isPhpEnabled'     => true,
+        'isRemoteEnabled'  => true,
+        'fontDir'          => 'fonts',
+        'fontCache'        => 'fonts',
+        'defaultPaperSize' => 'a4',
+    ));
     $dompdf = new Dompdf($options);
     // https://github.com/dompdf/dompdf/commit/23a6939
     ob_start();
@@ -147,7 +153,7 @@ if(!$stream){
         'FitWindow'       => true,  // Cause viewer window to be resized (if needed) to fit Page 1 at its set zoom level
         'CenterWindow'    => true,  // Cause viewer window to be centred on the screen
         'DisplayDocTitle' => false, // Display filename as opposed to the 'Title' tag
-        #'Duplex'         => 'Simplex', // Print single-sided
+       #'Duplex'          => 'Simplex', // Print single-sided
         'Duplex'          => 'DuplexFlipLongEdge', // Print double-sided
         'PrintScaling'    => 'None',
     );
@@ -208,9 +214,79 @@ if(!$stream){
     }
 
     $pdf->SetProtection($permissions = array('modify', 'copy', 'annot-forms', 'fill-forms', 'extract', 'assemble'), '', $password, 1, null);
-    $pdf->Output($destinationFile, 'I'); // Option D to download locally
 
-    $unprotected = array_keys($files); $unprotected = $unprotected[0];
+    if(extension_loaded('imagick') && class_exists('ColorPalette')){
+        $pdf_output = $pdf->Output($destinationFile, 'S');
+
+        $blob = new Imagick();
+        $blob->setResolution(200, 200);
+        $blob->readImageBlob($pdf_output);
+
+        $imagick = new Imagick();
+        $imagick->newimage(1654, 2339, convert_colour_to_rgb($yaml->colours->backgroundColour)); // Set background to white
+        $imagick->compositeimage($blob, Imagick::COMPOSITE_OVER, 0, 0); // Merge both images
+
+        $imagick->setImageFormat('png');
+        $path = 'images/cv.png';
+        file_put_contents($path, $imagick);
+
+        $html_output = '<style>body { margin: 0 }</style>';
+
+        if(file_exists($path)){
+            $palettes = ColorPalette::GenerateFromLocalImage($path);
+            $palettes = array_slice($palettes, 0, 6, true); // First 6 colours
+
+            $html_output .= '<style>
+            ul {
+                position: absolute;
+                margin: 60px 0 0 30px;
+                padding: 0;
+            }
+            li {
+                min-width: 40px;
+                min-height: 20px;
+                list-style-type: none;
+            }
+            li:first-child {
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+            }
+            li:last-child {
+                border-bottom-left-radius: 3px;
+                border-bottom-right-radius: 3px;
+            }
+            li:hover {
+                transform: scale(1.3);
+                box-shadow: 1px 1px 2px rgba(0, 0, 0, .3);
+                border-radius: 0;
+            }
+            .fff { box-shadow: inset 0 0 1px #ccc }
+            @media only screen and (max-width: 1000px) { ul { display: none } }
+            </style>';
+
+            $html_output .= '<ul>';
+            foreach($palettes as $hex => $occurrences){
+                // If `ffffff` trim to `fff`
+                if(preg_match('/^(.)\1*$/', $hex)){
+                    $hex = substr($hex, 0, 3);
+                }
+                $occurrences = number_format($occurrences); // Add thousands separator
+
+                $html_output .= "<li class='{$hex}' style='background-color: #{$hex}' title='#{$hex} (&times;{$occurrences})'></li>";
+            }
+            $html_output .= '</ul>';
+        }
+
+        $pdf_encoded  = base64_encode($pdf_output);
+        $html_output .= "<embed width='100%' height='100%' src='data:application/pdf;base64,{$pdf_encoded}' type='application/pdf'>";
+        echo sprintf('<body>%s</body>', $html_output);
+    } else {
+        // Use pdf2png.com
+        $pdf->Output($destinationFile, 'I');
+    }
+
+    $unprotected = array_keys($files);
+    $unprotected = $unprotected[0];
     unlink($unprotected);
 } else {
     foreach($files as $sourceFile => $config){

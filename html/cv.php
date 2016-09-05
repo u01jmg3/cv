@@ -1,4 +1,3 @@
-<?php require_once 'includes/functions.inc.php' ?>
 <!doctype html>
 <html>
 <head>
@@ -72,7 +71,7 @@
 
         /**********************************************/
 
-        .primary-colour { color: <?php echo 'rgb(' . implode(', ', $yaml->colours->primaryColour) . ')' ?> }
+        .primary-colour { color: <?php echo convert_colour_to_rgb($yaml->colours->primaryColour) ?> }
         .light-grey     { color: rgb(217, 217, 217) }
         .dark-grey      { color: rgb(76, 76, 76) }
         .darkest-grey   { color: rgb(40, 40, 40) }
@@ -99,7 +98,7 @@
         }
 
         .circle-background {
-            background-color: <?php echo 'rgb(' . implode(', ', $yaml->colours->backgroundColour) . ')' ?>;
+            background-color: <?php echo convert_colour_to_rgb($yaml->colours->backgroundColour) ?>;
             margin-top: 2px;
             padding-right: 9.5px;
             width: 1px;
@@ -145,14 +144,14 @@
 
         .light-grey-border { border: 1px solid rgb(217, 217, 217) }
 
-        .primary-colour-border-bottom-2 { border-bottom: 2px solid <?php echo 'rgb(' . implode(', ', $yaml->colours->primaryColour) . ')' ?> }
+        .primary-colour-border-bottom-2 { border-bottom: 2px solid <?php echo convert_colour_to_rgb($yaml->colours->primaryColour) ?> }
 
         .light-grey-dotted-border-left { border-left: 1px dotted rgb(217, 217, 217) }
 
         .vertical-align-top    { vertical-align: top }
         .vertical-align-bottom { vertical-align: bottom }
 
-        .transparent-text { color: <?php echo 'rgb(' . implode(', ', $yaml->colours->backgroundColour) . ')' ?> }
+        .background-colour-text { color: <?php echo convert_colour_to_rgb($yaml->colours->backgroundColour) ?> }
 
         /**/
 
@@ -280,7 +279,7 @@
                     );
                 ?></td>
                 <td class="small-size padding-left-2 <?php echo ($key % 2 === 0) ? 'padding-top-2' : 'padding-top-1-5' ?>">
-                    <?php echo complex_wordwrap(97, '<span class="icon-font icon-dot medium-size transparent-text"></span>', '<span class="icon-font icon-dot medium-size dark-grey"></span>', $experience->summary) ?>
+                    <?php echo complex_wordwrap(97, '<span class="icon-font icon-dot medium-size background-colour-text"></span>', '<span class="icon-font icon-dot medium-size dark-grey"></span>', $experience->summary) ?>
                 </td>
             </tr>
             <?php if($key < $length){ ?>
