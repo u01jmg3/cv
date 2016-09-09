@@ -131,8 +131,9 @@
         if($difference >= 0){ // This was in the past
             $ending = 'ago';
         } else if($difference < 0){ // This is in the future
-            if($force_positive)
+            if($force_positive){
                 $difference = -$difference;
+            }
 
             $ending = 'to go';
         }
@@ -192,4 +193,60 @@
      */
     function convert_colour_to_rgb($colour_array){
         return 'rgb(' . implode(', ', $colour_array) . ')';
+    }
+
+    /**
+     * @param   $colours
+     * @return  array
+     */
+    function sort_hex_colours($colours){
+        $map = array(
+            '0' => 0,
+            '1' => 1,
+            '2' => 2,
+            '3' => 3,
+            '4' => 4,
+            '5' => 5,
+            '6' => 6,
+            '7' => 7,
+            '8' => 8,
+            '9' => 9,
+            'a' => 10,
+            'b' => 11,
+            'c' => 12,
+            'd' => 13,
+            'e' => 14,
+            'f' => 15,
+        );
+        $c = 0;
+        $sorted = array();
+        foreach($colours as $colour => $count){
+            if(strlen($colour) === 6){
+                $condensed = '';
+                $i = 0;
+
+                foreach(preg_split('//', $colour, -1, PREG_SPLIT_NO_EMPTY) as $char){
+                    if($i % 2 === 0){
+                        $condensed .= $char;
+                    }
+
+                    $i++;
+                }
+
+                $colour_str = $condensed;
+            }
+
+            $value = 0;
+            foreach(preg_split('//', $colour_str, -1, PREG_SPLIT_NO_EMPTY) as $char){
+                $value += intval($map[$char]);
+            }
+
+            $value = str_pad($value, 5, '0', STR_PAD_LEFT);
+            $sorted['_' . $value . $c] = $colour;
+            $c++;
+        }
+
+        ksort($sorted);
+
+        return $sorted;
     }

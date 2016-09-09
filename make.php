@@ -113,7 +113,9 @@ function addToBookmarks($bookmarks, $array, $pagecounts){
             $pagenumber = $info[0] + $pagecounts;
             $y          = $info[1];
 
-            if(array_key_exists($key, $bookmarks)) $key .= " - {$pagenumber}"; // Remember array keys must be unique
+            if(array_key_exists($key, $bookmarks)){
+                $key .= " - {$pagenumber}"; // Remember array keys must be unique
+            }
             $temp[$key] = implode('|', array($pagenumber, $y));
         }
 
@@ -236,6 +238,13 @@ if(!$stream){
             $palette = Palette::fromFilename($path);
             $colours = $palette->getMostUsedColors(6);
 
+            $keys = array_map(function($colour){
+                return strtolower(ltrim(Color::fromIntToHex($colour), '#'));
+            }, array_keys($colours));
+            $colours = array_combine($keys, $colours);
+
+            $colours = sort_hex_colours($colours);
+
             $html_output .= '<style>
             ul {
                 position: absolute;
@@ -265,15 +274,15 @@ if(!$stream){
             </style>';
 
             $html_output .= '<ul>';
-            foreach($colours as $colour => $count){
-                $hex = strtolower(ltrim(Color::fromIntToHex($colour), '#'));
+            foreach($colours as $hex){
                 // If `ffffff` trim to `fff`
                 if(preg_match('/^(.)\1*$/', $hex)){
                     $hex = substr($hex, 0, 3);
                 }
-                $count = number_format($count); // Add thousands separator
 
-                $html_output .= "<li class='{$hex}' style='background-color: #{$hex}' title='#{$hex} (&times;{$count})'></li>";
+                $rgb = implode(', ', Color::fromIntToRgb(Color::fromHexToInt($hex)));
+
+                $html_output .= "<li class='{$hex}' style='background-color: #{$hex}' title='#{$hex} &middot; rgb({$rgb})'></li>";
             }
             $html_output .= '</ul>';
         }
