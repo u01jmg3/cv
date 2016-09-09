@@ -112,8 +112,22 @@
      * @return  int
      */
     function round_down($number, $precision = 2){
-        $fig = (int) str_pad('1', $precision, '0');
-        return (floor($number * $fig) / $fig);
+        $figure = (int) str_pad('1', $precision, '0');
+
+        return (floor($number * $figure) / $figure);
+    }
+
+    /**
+     * @param   $number
+     * @param   $denominator
+     * @return  int
+     */
+    function floor_to_fraction($number, $denominator = 1){
+        $i = $number * $denominator;
+        $i = floor($i);
+        $i = $i / $denominator;
+
+        return $i;
     }
 
     /**
@@ -146,23 +160,24 @@
 
         $difference = round_down($difference);
 
-        $is_exact = false;
-        if(fmod($difference, 1) == 0){
-            $is_exact = true;
+        $is_whole = false;
+        if(fmod($difference, 1) === 0){
+            $is_whole = true;
         }
 
-        if(!$is_exact){
-            $difference = round($difference);
+        if(!$is_whole){
+            $difference = floor_to_fraction($difference, 4);
         }
 
         if($difference != 1){
             $periods[$j] .= 's';
         }
 
-        if(!$is_exact){
+        if(!$is_whole){
             $difference .= '+';
         }
 
+        $difference = str_replace(array('.25', '.5', '.75'), array('&frac14;', '&frac12;', '&frac34;'), $difference);
         $text = ($add_ending) ? implode(' ', array($difference, $periods[$j], $ending)) : implode(' ', array($difference, $periods[$j]));
 
         return $text;
