@@ -91,20 +91,21 @@
 
         .sub-headline { padding: 8px 0 0 8px }
 
-        .circle {
+        .circle-outer {
             position: absolute;
             left: 12.5px;
-            margin-top: 12px;
+            margin-top: 21px;
         }
 
-        .circle-background {
-            background-color: <?php echo convert_colour_to_rgb($yaml->colours->backgroundColour) ?>;
-            margin-top: 2px;
-            padding-right: 9.5px;
-            width: 1px;
-            height: 10px;
-            line-height: 10px;
+        .circle-outer:before {
+            color: <?php echo convert_colour_to_rgb($yaml->colours->backgroundColour) ?>;
+            font-size: 3.2em;
+            margin-left: -13.5px;
+            height: 1px;
+            line-height: 1px;
         }
+
+        .circle-inner { margin-top: -22px }
 
         .column-size-1-5  { width: 1.5% }
         .column-size-2-5  { width: 2.5% }
@@ -192,8 +193,8 @@
                 <td class="column-size-2-5"></td>
                 <?php if($key < (sizeof($yaml->education) - 1)){ ?>
                 <td class="column-size-7-5 light-grey-dotted-border-left">
-                    <div class="circle primary-colour">
-                        <div class="icon-font icon-circle circle-background"></div>
+                    <div class="icon-font icon-dot circle-outer primary-colour">
+                        <div class="icon-font icon-circle circle-inner"></div>
                     </div>
                 </td>
                 <?php } else { ?>
@@ -201,8 +202,8 @@
                     <table class="margin-top-minus-1">
                         <tr>
                             <td class="light-grey-dotted-border-left">&nbsp;
-                                <div class="circle primary-colour">
-                                    <div class="icon-font icon-circle circle-background"></div>
+                                <div class="icon-font icon-dot circle-outer primary-colour">
+                                    <div class="icon-font icon-circle circle-inner"></div>
                                 </div>
                             </td>
                         </tr>
@@ -244,8 +245,8 @@
                 <td class="column-size-2-5"></td>
                 <?php if($key < $length){ ?>
                 <td class="column-size-7-5 light-grey-dotted-border-left">
-                    <div class="circle primary-colour">
-                        <div class="icon-font icon-circle circle-background"></div>
+                    <div class="icon-font icon-dot circle-outer primary-colour">
+                        <div class="icon-font icon-circle circle-inner"></div>
                     </div>
                 </td>
                 <?php } else { ?>
@@ -253,8 +254,8 @@
                     <table class="margin-top-minus-1">
                         <tr>
                             <td class="light-grey-dotted-border-left">&nbsp;
-                                <div class="circle primary-colour">
-                                    <div class="icon-font icon-circle circle-background"></div>
+                                <div class="icon-font icon-dot circle-outer primary-colour">
+                                    <div class="icon-font icon-circle circle-inner"></div>
                                 </div>
                             </td>
                         </tr>
