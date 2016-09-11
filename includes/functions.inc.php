@@ -8,16 +8,6 @@
     }
 
     /**
-     * @param   $value
-     * @param   $unused
-     * @param   $prefix_for_start_of_sentence
-     * @return  string
-     */
-    function add_prefix(&$value, $unused, $prefix_for_start_of_sentence){
-        $value = $prefix_for_start_of_sentence . $value;
-    }
-
-    /**
      * @param   $haystack
      * @param   $replace_with
      * @param   $length
@@ -74,13 +64,13 @@
 
     /**
      * @param   $width
-     * @param   $prefix_for_wrapped_lines
      * @param   $prefix_for_start_of_sentence
+     * @param   $prefix_for_wrapped_lines
      * @param   $string
      * @param   $do_split_sentences
      * @return  string
      */
-    function complex_wordwrap($width, $prefix_for_wrapped_lines, $prefix_for_start_of_sentence, $string, $do_split_sentences = true){
+    function complex_wordwrap($width, $prefix_for_start_of_sentence, $prefix_for_wrapped_lines, $string, $do_split_sentences = true){
         $line_break  = "<br />\n";
         $output      = array();
         $placeholder = '[break]';
@@ -88,20 +78,35 @@
         $string = replace_rsquote($string, "'");
 
         if($do_split_sentences){
-            $sentences = preg_split('/(?<=[.?!])\s+/', $string, -1, PREG_SPLIT_NO_EMPTY); // Create sentence array()
+            // Create sentence array()
+            $sentences = preg_split('/(?<=[.?!])\s+/', $string, -1, PREG_SPLIT_NO_EMPTY);
         } else {
-            $sentences = array($string);
+            $sentences   = array($string);
+            $placeholder = $line_break;
         }
 
         foreach($sentences as $sentence){
-            array_push($output, wordwrap($sentence, $width, $placeholder));
-        }
+            $wordwrap = wordwrap($sentence, $width, $placeholder);
 
-        array_walk_recursive($output, 'add_prefix', $prefix_for_start_of_sentence);
+            if($do_split_sentences){
+                $wordwrap = explode($placeholder, $wordwrap);
+
+                foreach($wordwrap as $index => $line){
+                    if($index === 0){
+                        $wordwrap[$index] = $prefix_for_start_of_sentence . $line;
+                    } else {
+                        $wordwrap[$index] = sprintf($prefix_for_wrapped_lines, $line);
+                    }
+                }
+
+                $wordwrap = implode($line_break, $wordwrap);
+            }
+
+            array_push($output, $wordwrap);
+        }
 
         $output = implode($line_break, $output);
         $output = replace_squote($output, '&#8217;');
-        $output = str_replace($placeholder, $line_break . $prefix_for_wrapped_lines, $output);
 
         return $output;
     }

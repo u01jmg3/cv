@@ -133,6 +133,7 @@
         .padding-left-8       { padding-left: 8px }
         .padding-left-9       { padding-left: 9px }
         .padding-left-10      { padding-left: 9.5px }
+        .padding-left-14      { padding-left: 13.5px }
         .padding-bottom-5 td  { padding-bottom: 5px }
         .padding-bottom-15 td { padding-bottom: 15px }
         .no-padding-left      { padding-left: 0 }
@@ -150,8 +151,6 @@
 
         .vertical-align-top    { vertical-align: top }
         .vertical-align-bottom { vertical-align: bottom }
-
-        .background-colour-text { color: <?php echo convert_colour_to_rgb($yaml->colours->backgroundColour) ?> }
 
         /**/
 
@@ -279,7 +278,7 @@
                     );
                 ?></td>
                 <td class="small-size padding-left-2 <?php echo ($key % 2 === 0) ? 'padding-top-2' : 'padding-top-1-5' ?>">
-                    <?php echo complex_wordwrap(97, '<span class="icon-font icon-dot medium-size background-colour-text"></span>', '<span class="icon-font icon-dot medium-size dark-grey"></span>', $experience->summary) ?>
+                    <?php echo complex_wordwrap(97, '<span class="icon-font icon-dot medium-size dark-grey"></span>', '<span class="vertical-align-top padding-left-14">%s</span>', $experience->summary) ?>
                 </td>
             </tr>
             <?php if($key < $length){ ?>
