@@ -11,7 +11,8 @@
         "phenx/php-svg-lib": "0.1",
         "u01jmg3/setasign-fpdi": "1.4.5",
         "symfony/yaml": "3.1.2",
-        "tecnickcom/tcpdf": "6.2.12"
+        "tecnickcom/tcpdf": "6.2.12",
+        "worddrop/bookworm": "dev-master"
     },
     "config": {
         "preferred-install": "source"

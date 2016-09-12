@@ -6,6 +6,7 @@ require_once 'includes/config.inc.php';
 require_once 'includes/functions.inc.php';
 require_once 'vendor/autoload.php';
 
+use Bookworm\Bookworm;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\Yaml\Yaml;
@@ -137,7 +138,11 @@ $bookmarks       = array();
 $doBookmarks     = true;
 $pagecounts      = 0;
 $password        = 'ruc6?ray=bu6+J=neb6u';
-$yaml            = json_decode(json_encode(Yaml::parse(file_get_contents($htmlHome . "/{$filename}.yaml"))), false);
+$yaml            = Yaml::parse(file_get_contents($htmlHome . "/{$filename}.yaml"));
+$text            = recursive_implode($yaml);
+Bookworm::configure(array('wordsPerMinute' => 275));
+$reading_time    = Bookworm::estimate($text, ' min');
+$yaml            = json_decode(json_encode($yaml), false);
 
 if(!$stream){
     // https://sourceforge.net/p/tcpdf/discussion/435311/thread/b16d9231/
@@ -246,8 +251,13 @@ if(!$stream){
             $colours = sort_hex_colours($colours);
 
             $html_output .= '<style>
+            @font-face {
+                font-family: secca;
+                src: url("fonts/Secca Std - Regular.ttf");
+            }
+            body { font-family: secca }
             ul {
-                position: absolute;
+                position: fixed;
                 margin: 60px 0 0 30px;
                 padding: 0;
             }
@@ -270,6 +280,18 @@ if(!$stream){
                 border-radius: 0;
             }
             .fff { box-shadow: inset 0 0 1px #ccc }
+            .reading-time {
+                position: fixed;
+                left: 50%;
+                bottom: 0%;
+                transform: translateX(-50%);
+                padding: 3px 12px;
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+                background: rgb(50, 54, 57);
+                color: rgb(241, 241, 241);
+                opacity: .9;
+            }
             @media only screen and (max-width: 1000px) { ul { display: none } }
             </style>';
 
@@ -289,7 +311,7 @@ if(!$stream){
 
         $pdf_encoded  = base64_encode($pdf_output);
         $html_output .= "<embed width='100%' height='100%' src='data:application/pdf;base64,{$pdf_encoded}' type='application/pdf'>";
-        echo sprintf('<body>%s</body>', $html_output);
+        echo sprintf("<body>%s<small class='reading-time'>$reading_time read</small></body>", $html_output);
     } else {
         // Use pdf2png.com
         $pdf->Output($destinationFile, 'I');
