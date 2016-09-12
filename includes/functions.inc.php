@@ -179,7 +179,7 @@
         }
 
         if(!$is_whole){
-            $difference = '+' . $difference;
+            $difference = '&gt;' . $difference;
         }
 
         $difference = str_replace(array('.25', '.5', '.75'), array('&frac14;', '&frac12;', '&frac34;'), $difference);
