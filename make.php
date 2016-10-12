@@ -234,13 +234,13 @@ if(!$stream){
 
         $file_format = 'png';
         $imagick->setImageFormat($file_format);
-        $path = "images/cv.{$file_format}";
-        file_put_contents($path, $imagick);
+        $image_path = "images/cv.{$file_format}";
+        file_put_contents($image_path, $imagick);
 
         $html_output = '<style>body { margin: 0 }</style>';
 
-        if(file_exists($path)){
-            $palette = Palette::fromFilename($path);
+        if(file_exists($image_path)){
+            $palette = Palette::fromFilename($image_path);
             $colours = $palette->getMostUsedColors(6);
 
             $keys = array_map(function($colour){
@@ -255,7 +255,10 @@ if(!$stream){
                 font-family: secca;
                 src: url("fonts/Secca Std - Regular.ttf");
             }
-            body { font-family: secca }
+            body {
+                font-family: secca;
+                background-color: #525659;
+            }
             ul {
                 position: fixed;
                 margin: 60px 0 0 30px;
@@ -292,6 +295,19 @@ if(!$stream){
                 color: rgb(241, 241, 241);
                 opacity: .9;
             }
+            .vertically-align {
+                position: relative;
+                -webkit-transform: translateY(-50%);
+                        transform: translateY(-50%);
+            }
+            .pdf-container {
+                top: 620px;
+                left: calc(50% - 397px);
+                width: 793px;
+                box-shadow: 1px 1px 12px -1px rgba(0, 0, 0, .75);
+                margin-bottom: 7px;
+            }
+            .pdf-img { width: 793px }
             @media only screen and (max-width: 1000px) { ul { display: none } }
             </style>';
 
@@ -309,8 +325,14 @@ if(!$stream){
             $html_output .= '</ul>';
         }
 
-        $pdf_encoded  = base64_encode($pdf_output);
-        $html_output .= "<embed width='100%' height='100%' src='data:application/pdf;base64,{$pdf_encoded}' type='application/pdf'>";
+        $view_as_image = false;
+        if($view_as_image){
+            $html_output .= "<div class='vertically-align pdf-container'><img class='pdf-img' src='{$image_path}'></div>";
+        } else {
+            $pdf_encoded  = base64_encode($pdf_output);
+            $html_output .= "<embed width='100%' height='100%' src='data:application/pdf;base64,{$pdf_encoded}' type='application/pdf'>";
+        }
+
         echo sprintf("<body>%s<small class='reading-time'>$reading_time read</small></body>", $html_output);
     } else {
         // Use pdf2png.com
