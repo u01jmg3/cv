@@ -12,6 +12,12 @@
 
 --
 
+## FAQs
+
+- See [Wiki](https://github.com/u01jmg3/cv/wiki/FAQs)
+
+--
+
 <kbd>
 ![CV](images/cv.png)
 </kbd>
