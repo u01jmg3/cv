@@ -14,6 +14,16 @@ use League\ColorExtractor\Palette;
 use League\ColorExtractor\Color;
 
 function createPDF($html, $filename, $stream, $dirname, $yaml){
+/**
+ * Create a PDF using Dompdf with relevant options defined
+ *
+ * @param string  $html
+ * @param string  $filename
+ * @param boolean $stream
+ * @param string  $dirname
+ * @param object  $yaml
+ * @return array
+ */
     $options = new Options();
     $options->set(array(
         'isPhpEnabled'     => true,
@@ -48,6 +58,14 @@ class PDF extends FPDI_with_annots {
             'BleedBox' => array('llx' => 5,  'lly' => 5,  'urx' => 205, 'ury' => 292),
             'TrimBox'  => array('llx' => 10, 'lly' => 10, 'urx' => 200, 'ury' => 287),
             'ArtBox'   => array('llx' => 15, 'lly' => 15, 'urx' => 195, 'ury' => 282),
+    /**
+     * FPDI extension for TCPDF that preserves hyperlinks
+     * when copying PDF pages
+     *
+     * @param integer $pagecount
+     * @param string  $orientation
+     * @return void
+     */
             'Dur'      => 3,
             'trans'    => array('D' => 1.5, 'S' => 'Split', 'Dm' => 'V', 'M' => 'O'),
             'Rotate'   => 0,
@@ -61,6 +79,12 @@ class PDF extends FPDI_with_annots {
     }
 
     public function Header(){
+    /**
+     * Define a coloured header
+     * and set the background colour if required
+     *
+     * @return void
+     */
         // Check if colour is white
         if($this->backgroundColour !== array(255, 255, 255)){
             $this->Rect(0, 0, 210, 297, 'F', '', $this->backgroundColour);
@@ -69,8 +93,13 @@ class PDF extends FPDI_with_annots {
         $this->Rect(0, 0, 210, 4, 'F', '', $this->primaryColour); // 7 is max for $h (fourth parameter)
     }
 
-    // Page numbers + 1D barcode of current date
     public function Footer(){
+    /**
+     * Define a coloured footer with a centred 1D barcode of the current date
+     * Include profile picture if enabled
+     *
+     * @return void
+     */
         $this->SetY(-13.4);
         $this->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, 0);
         $this->SetTextColor(40, 40, 40); // Darkest Grey
@@ -105,6 +134,17 @@ class PDF extends FPDI_with_annots {
 
 function addToBookmarks($bookmarks, $array, $pagecounts){
     if(empty($bookmarks)){
+/**
+ * Create a PDF using TCPDF piped from Dompdf (using FPDI)
+ * This includes creating bookmarks if a numbered title is found (e.g. `1. Title`)
+ * If imagick is loaded an estimated reading time overlay is displayed
+ * and a colour swatch of the 6 most used colours
+ *
+ * @param array   $bookmarks
+ * @param array   $array
+ * @param integer $pagecounts
+ * @return array
+ */
         return $array;
     } else {
         $temp = array();
