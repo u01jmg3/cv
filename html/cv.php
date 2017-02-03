@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>CV - <?php echo date('M j, Y') ?></title>
+    <title>CV - <?= date('M j, Y') ?></title>
     <style type="text/css">
         @font-face {
             font-family: Secca;
@@ -71,7 +71,7 @@
 
         /**********************************************/
 
-        .primary-colour { color: <?php echo convert_colour_to_rgb($yaml->colours->primaryColour) ?> }
+        .primary-colour { color: <?= convert_colour_to_rgb($yaml->colours->primaryColour) ?> }
         .light-grey     { color: rgb(217, 217, 217) }
         .dark-grey      { color: rgb(76, 76, 76) }
         .darkest-grey   { color: rgb(40, 40, 40) }
@@ -98,7 +98,7 @@
         }
 
         .circle-outer:before {
-            color: <?php echo convert_colour_to_rgb($yaml->colours->backgroundColour) ?>;
+            color: <?= convert_colour_to_rgb($yaml->colours->backgroundColour) ?>;
             font-size: 3.2em;
             margin-left: -13.5px;
             height: 1px;
@@ -146,7 +146,7 @@
 
         .light-grey-border { border: 1px solid rgb(217, 217, 217) }
 
-        .primary-colour-border-bottom-2 { border-bottom: 2px solid <?php echo convert_colour_to_rgb($yaml->colours->primaryColour) ?> }
+        .primary-colour-border-bottom-2 { border-bottom: 2px solid <?= convert_colour_to_rgb($yaml->colours->primaryColour) ?> }
 
         .light-grey-dotted-border-left { border-left: 1px dotted rgb(217, 217, 217) }
 
@@ -162,18 +162,18 @@
     <table>
         <tbody>
             <tr>
-                <td class="x-x-large-size auto-width no-wrap primary-colour padding-left-2"><a href="<?php echo $yaml->basics->website ?>"><?php echo $yaml->basics->name ?></a></td>
-                <td class="small-size large-width sub-headline primary-colour"><?php echo $yaml->basics->label ?></td>
+                <td class="x-x-large-size auto-width no-wrap primary-colour padding-left-2"><a href="<?= $yaml->basics->website ?>"><?= $yaml->basics->name ?></a></td>
+                <td class="small-size large-width sub-headline primary-colour"><?= $yaml->basics->label ?></td>
             </tr>
         </tbody>
     </table>
     <table class="no-wrap">
         <tbody>
             <tr class="small-size darkest-grey padding-bottom-15">
-                <td class="column-size-35"><span class="icon-font icon-location medium-size"></span> <a href="https://maps.google.com/?q=<?php echo implode(',', $yaml->basics->location->coordinates) ?>"><?php echo implode(', ', array($yaml->basics->location->address, $yaml->basics->location->postalCode, $yaml->basics->location->countryCode)) ?></a></td>
-                <td class="column-size-25-5"><span class="icon-font icon-mobile-phone medium-size"></span> <a href="tel:<?php echo format_telephone_number($yaml->basics->phone) ?>"><?php echo $yaml->basics->phone ?></a></td>
-                <td><span class="icon-font icon-envelope medium-size"></span> <a href="mailto:<?php echo $yaml->basics->email ?>"><?php echo $yaml->basics->email ?></a></td>
-                <td class="right-align-text"><span class="icon-font icon-github medium-size"></span> <a href="https://github.com/<?php echo $yaml->basics->profiles->github->username ?>"><?php echo $yaml->basics->profiles->github->username ?></a></td>
+                <td class="column-size-35"><span class="icon-font icon-location medium-size"></span> <a href="https://maps.google.com/?q=<?= implode(',', $yaml->basics->location->coordinates) ?>"><?= implode(', ', [$yaml->basics->location->address, $yaml->basics->location->postalCode, $yaml->basics->location->countryCode]) ?></a></td>
+                <td class="column-size-25-5"><span class="icon-font icon-mobile-phone medium-size"></span> <a href="tel:<?= format_telephone_number($yaml->basics->phone) ?>"><?= $yaml->basics->phone ?></a></td>
+                <td><span class="icon-font icon-envelope medium-size"></span> <a href="mailto:<?= $yaml->basics->email ?>"><?= $yaml->basics->email ?></a></td>
+                <td class="right-align-text"><span class="icon-font icon-github medium-size"></span> <a href="https://github.com/<?= $yaml->basics->profiles->github->username ?>"><?= $yaml->basics->profiles->github->username ?></a></td>
             </tr>
         </tbody>
     </table>
@@ -188,10 +188,10 @@
     </table>
     <table class="no-wrap">
         <tbody>
-            <?php foreach($yaml->education as $key => $education){ ?>
+            <?php foreach ($yaml->education as $key => $education) { ?>
             <tr class="padding-bottom-5">
                 <td class="column-size-2-5"></td>
-                <?php if($key < (sizeof($yaml->education) - 1)){ ?>
+                <?php if ($key < (sizeof($yaml->education) - 1)) { ?>
                 <td class="column-size-7-5 light-grey-dotted-border-left">
                     <div class="icon-font icon-dot circle-outer primary-colour">
                         <div class="icon-font icon-circle circle-inner"></div>
@@ -210,8 +210,8 @@
                     </table>
                 </td>
                 <?php } ?>
-                <td class="small-size padding-left-1 column-size-25-2"><span class="darkest-grey"><?php echo $education->institution ?></span><br /><?php echo date_format(date_create($education->startDate), 'M Y') ?> – <?php echo date_format(date_create($education->endDate), 'M Y') ?></td>
-                <td class="small-size"><span class="dark-grey"><?php echo $education->studyType . ' ' . $education->area ?> - <em><?php echo $education->gpa ?></em></span>, Languages: <?php echo implode(', ', $education->languages) ?><br />Topics included <?php echo implode(', ', $education->courses) ?>, etc.</td>
+                <td class="small-size padding-left-1 column-size-25-2"><span class="darkest-grey"><?= $education->institution ?></span><br /><?= date_format(date_create($education->startDate), 'M Y') ?> – <?= date_format(date_create($education->endDate), 'M Y') ?></td>
+                <td class="small-size"><span class="dark-grey"><?= $education->studyType . ' ' . $education->area ?> - <em><?= $education->gpa ?></em></span>, Languages: <?= implode(', ', $education->languages) ?><br />Topics included <?= implode(', ', $education->courses) ?>, etc.</td>
             </tr>
             <?php } ?>
         </tbody>
@@ -240,10 +240,10 @@
     </table>
     <table class="no-wrap">
         <tbody>
-            <?php $length = (sizeof($yaml->work) - 1); foreach($yaml->work as $key => $experience){ ?>
-            <tr class="vertical-align-top <?php echo ($key < $length) ? 'padding-bottom-5' : '' ?>">
+            <?php $length = (sizeof($yaml->work) - 1); foreach ($yaml->work as $key => $experience) { ?>
+            <tr class="vertical-align-top <?= ($key < $length) ? 'padding-bottom-5' : '' ?>">
                 <td class="column-size-2-5"></td>
-                <?php if($key < $length){ ?>
+                <?php if ($key < $length) { ?>
                 <td class="column-size-7-5 light-grey-dotted-border-left">
                     <div class="icon-font icon-dot circle-outer primary-colour">
                         <div class="icon-font icon-circle circle-inner"></div>
@@ -262,27 +262,24 @@
                     </table>
                 </td>
                 <?php } ?>
-                <td class="small-size padding-left-1 column-size-24-5"><?php echo
-                    '<span class="darkest-grey">' . $experience->position . ' – <br />' . $experience->company . '</span>' .
+                <td class="small-size padding-left-1 column-size-24-5"><?= '<span class="darkest-grey">' . $experience->position . ' – <br />' . $experience->company . '</span>' .
                     '<br />' .
                     (
                         ($key === 0)
-                        ?
-                        '<span class="padding-top-1">' .
+                        ? '<span class="padding-top-1">' .
                         date_format(date_create($experience->startDate), 'M Y') . ' – ' .
                         ((empty($experience->endDate)) ? '<em>Present</em>' : date_format(date_create($experience->endDate), 'M Y')) .
                         '</span>' .
                         ((empty($experience->endDate)) ? '<br />(' . get_relative_time(date_format(date_create($experience->startDate . ' 00:00:00'), 'U'), true) . ')' : '')
-                        :
-                        date_format(date_create($experience->startDate), 'M Y') . ' – ' .
+                        : date_format(date_create($experience->startDate), 'M Y') . ' – ' .
                         date_format(date_create($experience->endDate), 'M Y')
                     );
                 ?></td>
-                <td class="small-size padding-left-2 <?php echo ($key % 2 === 0) ? 'padding-top-2' : 'padding-top-1-5' ?>">
-                    <?php echo complex_wordwrap(97, '<span class="icon-font icon-dot medium-size dark-grey"></span>', '<span class="vertical-align-top padding-left-14">%s</span>', $experience->summary) ?>
+                <td class="small-size padding-left-2 <?= ($key % 2 === 0) ? 'padding-top-2' : 'padding-top-1-5' ?>">
+                    <?= complex_wordwrap(97, '<span class="icon-font icon-dot medium-size dark-grey"></span>', '<span class="vertical-align-top padding-left-14">%s</span>', $experience->summary) ?>
                 </td>
             </tr>
-            <?php if($key < $length){ ?>
+            <?php if ($key < $length) { ?>
             <tr class="spacer padding-bottom-5">
                 <td class="column-size-2-5"></td>
                 <td class="column-size-7-5 light-grey-dotted-border-left"></td>
@@ -312,7 +309,7 @@
             <tr class="vertical-align-top">
                 <td class="x-large-size column-size-10 padding-left-8 padding-top-5 primary-colour"><span class="icon-font icon-brain"></span></td>
                 <td class="large-size all-caps primary-colour column-size-25-2">3. Expertise</td>
-                <?php echo simple_wordwrap('<td class="padding-top-5 small-size">%s</td>', implode(', ', $yaml->skills[0]->keywords), COLUMNS_EXPERTISE) ?>
+                <?= simple_wordwrap('<td class="padding-top-5 small-size">%s</td>', implode(', ', $yaml->skills[0]->keywords), COLUMNS_EXPERTISE) ?>
             </tr>
         </tbody>
     </table>
@@ -343,7 +340,7 @@
             <tr>
                 <td class="column-size-10"></td>
                 <td class="padding-left-1 small-size">
-                <?php echo complex_wordwrap(136, '', '', $yaml->basics->summary, false) ?>
+                <?= complex_wordwrap(136, '', '', $yaml->basics->summary, false) ?>
                 </td>
             </tr>
         </tbody>
@@ -385,19 +382,19 @@
                 $even_row    = '<tr><td></td><td class="dark-grey light-grey-border padding-left-3">%s</td><td class="light-grey-border right-align-text padding-right-3">%s</td><td class="light-grey-border right-align-text padding-right-4">%s</td><td></td></tr>';
                 $all_rows    = '';
 
-                foreach($courses as $course){
-                    if(!isset($course->hide)){
+                foreach ($courses as $course) {
+                    if (!isset($course->hide)) {
                         $course_count++;
 
-                        if($course_count === 1){
+                        if ($course_count === 1) {
                             $all_rows = sprintf($initial_row, $course->title, $course->date, $course->duration);
-                        } else if($course_count % 2 === 0){
+                        } else if ($course_count % 2 === 0) {
                             $all_rows .= sprintf($even_row, $course->title, $course->date, $course->duration);
                         } else {
                             $all_rows .= sprintf($odd_row, $course->title, $course->date, $course->duration);
                         }
 
-                        if($course_count === ROWS_PROFESSIONAL_DEVELOPMENT){
+                        if ($course_count === ROWS_PROFESSIONAL_DEVELOPMENT) {
                             break;
                         }
                     }
@@ -439,25 +436,24 @@
     </table>
     <!-- End of Section 6 - Referees -->
     <script type="text/php">
-        if(isset($pdf)){
-            if($PAGE_COUNT > 1){
+        if (isset($pdf)) {
+            if ($PAGE_COUNT > 1) {
                 $y        = $pdf->get_height() - 34;
                 $pageText = "{PAGE_NUM} of {PAGE_COUNT}";
                 $font     = $fontMetrics->get_font('secca');
                 $size     = 8;
                 $x        = $pdf->get_width() - $fontMetrics->get_text_width('0 of 0', $font, $size) - 31;
 
-                $pdf->page_text($x, $y, $pageText, $font, $size, array(.3, .3, .3)); // rgb(76, 76, 76) Dark Grey
+                $pdf->page_text($x, $y, $pageText, $font, $size, [.3, .3, .3]); // rgb(76, 76, 76) Dark Grey
             }
         }
     </script>
 </body>
 </html>
 <?php
-    if(!PDF_MODE){
+    if (!PDF_MODE) {
         error_reporting(0);
-        echo
-        '<style>
+        echo '<style>
             body {
                 font-size: 130% !important;
                 min-width: 875px;

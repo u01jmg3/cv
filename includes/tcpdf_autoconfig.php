@@ -10,11 +10,11 @@ define('PDF_SKIP_FONTS', true);
 // Page configuration
 // =============================
 
-if(!defined('PDF_PAGE_FORMAT')){
+if (!defined('PDF_PAGE_FORMAT')) {
     define('PDF_PAGE_FORMAT', 'A4');
 }
 
-if(!defined('PDF_PAGE_ORIENTATION')){
+if (!defined('PDF_PAGE_ORIENTATION')) {
     define('PDF_PAGE_ORIENTATION', 'P');
 }
 
