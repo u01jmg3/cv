@@ -21,9 +21,3 @@
 <kbd>
 ![CV](images/cv.png)
 </kbd>
-
---
-
-## License
-
-- [CC BY-NC-ND 3.0](https://creativecommons.org/licenses/by-nc-nd/3.0/)
