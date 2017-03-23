@@ -10,14 +10,12 @@
 1. To generate the PDF view `make.php` in a browser running your local PHP server
   - e.g. `http://localhost/cv/`
 
---
+---
 
 ## FAQs
 
 - See [Wiki](https://github.com/u01jmg3/cv/wiki/FAQs)
 
---
+---
 
-<kbd>
 ![CV](images/cv.png)
-</kbd>
