@@ -17,12 +17,14 @@ basics:
  summary: "I am a software developer, inventor and entrepreneur. I am an active contributor amongst the open-source development community, most prominently in the San Francisco Bay Area where I live. I am most prominently known for my role as founder and former CEO of GitHub, a Git repository web-based hosting service, which I co-founded in 2008 with Chris Wanstrath and PJ Hyett. I am also the creator of the avatar service, Gravatar."
  location:
   address: "Null Island"
-  postalCode: "Gulf of Guinea"
+  postalCode: ""
   city: ""
+  country: "Gulf of Guinea"
   countryCode: "1G"
   coordinates:
    - 0
    - 0
+  zoomLevel: 5
  profiles:
   github:
    username: "mojombo"
@@ -88,6 +90,7 @@ skills:
     - "jQuery"
     - "HTML5"
     - "Programming"
+    - "PHP 6 / Angular 3"
 training:
  - title: "Conference: GitHub Universe 2016, San Francisco"
    date: "Sep 2016"

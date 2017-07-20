@@ -170,7 +170,7 @@
     <table class="no-wrap">
         <tbody>
             <tr class="small-size darkest-grey padding-bottom-15">
-                <td class="column-size-35"><span class="icon-font icon-location medium-size"></span> <a href="https://maps.google.com/?q=<?= implode(',', $yaml->basics->location->coordinates) ?>"><?= implode(', ', [$yaml->basics->location->address, $yaml->basics->location->postalCode, $yaml->basics->location->countryCode]) ?></a></td>
+                <td class="column-size-35"><span class="icon-font icon-location medium-size"></span> <a href="https://www.google.com/maps/place/<?= $yaml->basics->location->city ? "{$yaml->basics->location->city}, +{$yaml->basics->location->countryCode}/" : '' ?>@<?= implode(',', array_merge($yaml->basics->location->coordinates, ["{$yaml->basics->location->zoomLevel}z"])) ?>"><?= implode(', ', array_filter([$yaml->basics->location->address, $yaml->basics->location->city, $yaml->basics->location->postalCode, $yaml->basics->location->country])) ?></a></td>
                 <td class="column-size-25-5"><span class="icon-font icon-mobile-phone medium-size"></span> <a href="tel:<?= format_telephone_number($yaml->basics->phone) ?>"><?= $yaml->basics->phone ?></a></td>
                 <td><span class="icon-font icon-envelope medium-size"></span> <a href="mailto:<?= $yaml->basics->email ?>"><?= $yaml->basics->email ?></a></td>
                 <td class="right-align-text"><span class="icon-font icon-github medium-size"></span> <a href="https://github.com/<?= $yaml->basics->profiles->github->username ?>"><?= $yaml->basics->profiles->github->username ?></a></td>
@@ -211,7 +211,7 @@
                 </td>
                 <?php } ?>
                 <td class="small-size padding-left-1 column-size-25-2"><span class="darkest-grey"><?= $education->institution ?></span><br /><?= date_format(date_create($education->startDate), 'M Y') ?> – <?= date_format(date_create($education->endDate), 'M Y') ?></td>
-                <td class="small-size"><span class="dark-grey"><?= $education->studyType . ' ' . $education->area ?> - <em><?= $education->gpa ?></em></span>, Languages: <?= implode(', ', $education->languages) ?><br />Topics included <?= implode(', ', $education->courses) ?>, etc.</td>
+                <td class="small-size"><span class="dark-grey"><?= $education->studyType . ' ' . $education->area ?> -<?= $education->gpa ? " <em>{$education->gpa}</em>," : '' ?></span> Languages: <?= implode(', ', $education->languages) ?><br />Topics included <?= implode(', ', $education->courses) ?>, etc.</td>
             </tr>
             <?php } ?>
         </tbody>
@@ -262,7 +262,8 @@
                     </table>
                 </td>
                 <?php } ?>
-                <td class="small-size padding-left-1 column-size-24-5"><?= '<span class="darkest-grey">' . $experience->position . ' – <br />' . $experience->company . '</span>' .
+                <td class="small-size padding-left-1 column-size-24-5"><?=
+                    '<span class="darkest-grey">' . $experience->position . ' – <br />' . $experience->company . '</span>' .
                     '<br />' .
                     (
                         ($key === 0)
